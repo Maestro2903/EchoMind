@@ -1,0 +1,89 @@
+# electron-builder.yml
+
+# The unique application ID
+appId: com.echomind.app
+
+# The user-facing application name
+productName: EchoMind
+
+# Publish configuration for GitHub releases
+publish:
+    provider: github
+    owner: echomind-team
+    repo: echomind
+    releaseType: draft
+
+# Protocols configuration for deep linking
+protocols:
+    name: EchoMind Protocol
+    schemes: 
+        - echomind
+
+# List of files to be included in the app package
+files:
+    - src/**/*
+    - package.json
+    - echomind_web/backend_node/**/*
+    - '!**/node_modules/electron/**'
+    - public/build/**/*
+
+# Additional resources to be copied into the app's resources directory
+extraResources:
+    - from: echomind_web/out
+      to: out
+
+asarUnpack:
+    - "src/ui/assets/SystemAudioDump"
+    - "**/node_modules/sharp/**/*"
+    - "**/node_modules/@img/**/*"
+
+# Windows configuration
+win:
+    icon: src/ui/assets/logo.ico
+    target:
+        - target: nsis
+          arch: x64
+        - target: portable
+          arch: x64
+    requestedExecutionLevel: asInvoker
+    # Disabled signing for cross-platform build on macOS. Re-enable in CI with CSC_LINK/CSC_KEY_PASSWORD.
+    signAndEditExecutable: false
+    signtoolOptions:
+      certificateSubjectName: "EchoMind Dev Code Signing"
+
+# NSIS installer configuration for Windows
+nsis:
+    oneClick: false
+    perMachine: false
+    allowToChangeInstallationDirectory: true
+    deleteAppDataOnUninstall: true
+    createDesktopShortcut: always
+    createStartMenuShortcut: true
+    shortcutName: EchoMind
+
+# macOS specific configuration
+mac:
+    # The application category type
+    category: public.app-category.utilities
+    # Path to the .icns icon file
+    icon: src/ui/assets/logo.icns
+    # Minimum macOS version (supports both Intel and Apple Silicon)
+    minimumSystemVersion: '11.0'
+    # Disable signing for local builds to avoid codesign errors
+    hardenedRuntime: false
+    identity: null
+    entitlements: entitlements.plist
+    entitlementsInherit: entitlements.plist
+    target:
+      - target: dmg
+        arch: universal
+      - target: zip
+        arch: universal
+
+# Linux specific configuration
+linux:
+    # Use a single high-res PNG for Linux; builder will derive other sizes.
+    icon: src/ui/assets/icon.png
+    target:
+      - AppImage
+      - tar.gz

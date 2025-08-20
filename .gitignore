@@ -1,0 +1,24 @@
+# Node
+node_modules/
+*.log
+
+# macOS
+.DS_Store
+
+# Next.js
+ echomind_web/.next/
+echomind_web/out/
+echomind_web/.vercel/
+
+# Electron build artifacts
+hazylabs/
+dist/
+
+# Generated renderer bundle
+public/build/
+
+# Packaged app artifacts
+echo/
+
+# Functions
+functions/node_modules/
